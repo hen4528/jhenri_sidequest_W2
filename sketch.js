@@ -29,6 +29,9 @@ let blob3 = {
 
   // State
   onGround: false, // True when standing on a platform
+  standingOnPlatform: null, // Reference to the platform currently being stood on
+  previousPlatform: null, // Stores the platform from the previous frame for background color
+  platformColor: null, // Stores the color for the current platform
 
   // Friction
   frictionAir: 0.995, // Light friction in air
@@ -63,11 +66,25 @@ function setup() {
 }
 
 function draw() {
-  background(240);
+  // Set background based on PREVIOUS frame's platform state
+  if (
+    blob3.previousPlatform === platforms[0] ||
+    blob3.previousPlatform === null
+  ) {
+    background(240); // Light grey for floor/air
+  } else {
+    background(220, 240, 255); // Light blue for platform
+  }
 
   // --- Draw all platforms ---
   fill(200);
   for (const p of platforms) {
+    // Change the colour of the platform to yellow if the blob is standing on it, if the ledge is not being occupied it'll be grey
+    if (p === blob3.standingOnPlatform) {
+      fill(255, 255, 0); // Yellow
+    } else {
+      fill(200); // Grey
+    }
     rect(p.x, p.y, p.w, p.h);
   }
 
@@ -112,6 +129,7 @@ function draw() {
   // --- STEP 2: Move vertically, then resolve Y collisions ---
   box.y += blob3.vy;
   blob3.onGround = false;
+  blob3.standingOnPlatform = null;
 
   for (const s of platforms) {
     if (overlap(box, s)) {
@@ -120,6 +138,7 @@ function draw() {
         box.y = s.y - box.h;
         blob3.vy = 0;
         blob3.onGround = true;
+        blob3.standingOnPlatform = s;
       } else if (blob3.vy < 0) {
         // Rising → hit the underside of a platform
         box.y = s.y + s.h;
@@ -135,6 +154,24 @@ function draw() {
   // Keep blob inside the canvas horizontally
   blob3.x = constrain(blob3.x, blob3.r, width - blob3.r);
 
+  // Set blob color based on which platform it's standing on (after collision detection)
+  if (blob3.standingOnPlatform === platforms[0]) {
+    // Standing on the floor (first platform)
+    fill(0); // Black
+    blob3.platformColor = null;
+  } else if (blob3.standingOnPlatform !== null) {
+    // Generate a new random color only when landing on a new platform
+    if (blob3.platformColor === null) {
+      blob3.platformColor = color(random(255), random(255), random(255));
+    }
+    fill(blob3.platformColor);
+  } else {
+    // In the air - use the last platform color or default
+    if (blob3.platformColor !== null) {
+      fill(blob3.platformColor);
+    }
+  }
+
   // --- Draw the animated blob ---
   blob3.t += blob3.tSpeed;
   drawBlobCircle(blob3);
@@ -142,6 +179,9 @@ function draw() {
   // --- HUD ---
   fill(0);
   text("Move: A/D or ←/→  •  Jump: Space/W/↑  •  Land on platforms", 10, 18);
+
+  // Store the current platform state for next frame's background
+  blob3.previousPlatform = blob3.standingOnPlatform;
 }
 
 // Axis-Aligned Bounding Box (AABB) overlap test
@@ -154,7 +194,7 @@ function overlap(a, b) {
 
 // Draws the blob using Perlin noise for a soft, breathing effect
 function drawBlobCircle(b) {
-  fill(20, 120, 255);
+  // Color is already set in the draw() function before calling this
   beginShape();
 
   for (let i = 0; i < b.points; i++) {
