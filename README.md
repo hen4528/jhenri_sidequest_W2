@@ -1,29 +1,18 @@
 ## Project Title
-
-GBDA302 Week 3 Example 1: Instructions Screen with Back button
-
----
-
-## Authors
-
-Karen Cochrane and David Han
-
+Side Quest 2 - Adding Blobs Expressions
 ---
 
 ## Description
 
-This p5.js project demonstrates a simple multi-screen game structure using a state-based approach. The example includes a start screen, an instructions screen with a back button, a basic game screen, and win/lose outcome screens. The focus is on showing how to separate screens into different files, route input based on the current game state, and design simple UI elements such as buttons and keyboard controls.
-
+I worked with the chatbot to add colours to represent emotion of the blob in the game:
+- When the blob goes on a platform it turns yellow to demonstrate joy
+- When the blob isn't on the ground and is jumping around on platforms it is set to a randomized colour to  represent excitement and happiness versus boredeom when it's back on the ground
+- When the blob is on the platforms the background colour turns light blue (like the sky) to represent a positive shift in emotion now that the blob is on the platform
 ---
 
-## Learning Goals
+## Interaction Instructions
 
-- Understand how to manage multiple game states using a shared currentScreen variable
-- Practice separating code across multiple files for readability and maintenance
-- Implement clickable and keyboard-accessible UI buttons
-- Learn how to route draw(), mousePressed(), and keyPressed() logic based on the active screen
-- Build a basic instructions screen with a functional back button
-
+This is a fun, entertainment game where users can change the colour of the blob, the background and the platforms by interacting with the blobs movements. Users will use the keys to make the blob move from the ground to each platform and the colours will automatically change as each element is interacted with and triggered. When the blob is in the air, the background colour (sky) will get brighter, when the blob jumps on platforms the platform changes and so does the blob's colour. Making for an interactive experience with colour change that demonstrates emotions.
 ---
 
 ## Assets
@@ -32,8 +21,16 @@ N/A
 
 ---
 
+
 ## GenAI
 
-The code was written by Dr. Karen Cochrane but she used GenAI to write the comments.
+The code was written by Dr. Karen Cochrane and David Han 
+Edits made by Jasmine Henri and the help of visual studio's ChatBot
+
+These features used GenAI to ajdust and add more coding to the sketch.js through the chatbot built into visual studio code
+- The platform change
+- The blob colour change 
+- Readjusting the code and making changes to order the execution of the background colour change so it didn't disrupt the blob colour change in the draw function
 
 ---
+
