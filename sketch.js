@@ -66,7 +66,7 @@ function setup() {
 }
 
 function draw() {
-  // Set background based on PREVIOUS frame's platform state
+  // Set background colour based on the frame's previous platform state
   if (
     blob3.previousPlatform === platforms[0] ||
     blob3.previousPlatform === null
@@ -79,7 +79,7 @@ function draw() {
   // --- Draw all platforms ---
   fill(200);
   for (const p of platforms) {
-    // Change the colour of the platform to yellow if the blob is standing on it, if the ledge is not being occupied it'll be grey
+    // Change the colour of the platform to yellow if the blob is standing on it, if the ledge is not being occupied it'll revert to default grey
     if (p === blob3.standingOnPlatform) {
       fill(255, 255, 0); // Yellow
     } else {
@@ -154,19 +154,19 @@ function draw() {
   // Keep blob inside the canvas horizontally
   blob3.x = constrain(blob3.x, blob3.r, width - blob3.r);
 
-  // Set blob color based on which platform it's standing on (after collision detection)
+  // Set blob colour based on where it's standing
   if (blob3.standingOnPlatform === platforms[0]) {
-    // Standing on the floor (first platform)
+    // Blob is on the floor
     fill(0); // Black
     blob3.platformColor = null;
   } else if (blob3.standingOnPlatform !== null) {
-    // Generate a new random color only when landing on a new platform
+    // Generate a new random colour when the blob leaves the ground and lands on a platform
     if (blob3.platformColor === null) {
-      blob3.platformColor = color(random(255), random(255), random(255));
+      blob3.platformColor = color(random(255), random(255), random(255)); // Random colour
     }
     fill(blob3.platformColor);
   } else {
-    // In the air - use the last platform color or default
+    // In the air use the default colour
     if (blob3.platformColor !== null) {
       fill(blob3.platformColor);
     }
